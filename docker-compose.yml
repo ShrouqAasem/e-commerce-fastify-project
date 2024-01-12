@@ -1,9 +1,21 @@
 version: '3.8'
 
 services:
+  fastify_task:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastify_task
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://root:root@mysql:3306/Fastify_database
+    depends_on:
+      - mysql
   mysql:
     image: mysql:latest
     container_name: mysql
+    
     ports:
       - "3306:3306"
     environment:
@@ -14,4 +26,5 @@ services:
 
 volumes:
   mysql_data:
-  
+
+
