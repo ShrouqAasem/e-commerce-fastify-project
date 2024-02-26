@@ -11,10 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProductHandler = exports.getProductsHandler = exports.createProductHandler = void 0;
 const product_service_1 = require("./product.service");
-function createProductHandler(request) {
+function createProductHandler(request
+// <{
+//   Body: CreateProductInput;
+// }>
+// request: FastifyRequest
+, reply) {
     return __awaiter(this, void 0, void 0, function* () {
-        const product = yield (0, product_service_1.createProduct)(Object.assign({}, request.body));
-        return product;
+        const product = yield (0, product_service_1.createProduct)(Object.assign(Object.assign({}, request.body), { picture: request.file.filename, categoryId: parseInt(request.body.categoryId) }));
+        reply.code(200).send({ product, message: 'Product created successfully' });
     });
 }
 exports.createProductHandler = createProductHandler;

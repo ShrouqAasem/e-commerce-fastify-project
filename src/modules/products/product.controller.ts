@@ -3,15 +3,21 @@ import { CreateProductInput } from "./product.schema";
 import { createProduct, getProducts, getProduct} from "./product.service";
 
 export async function createProductHandler(
-  request: FastifyRequest<{
-    Body: CreateProductInput;
-  }>
+  request: any
+  // <{
+  //   Body: CreateProductInput;
+
+  // }>
+  // request: FastifyRequest
+  ,reply: FastifyReply
 ) {
   const product = await createProduct({
-    ...request.body
+    ...request.body,
+    picture: request.file.filename,
+    categoryId: parseInt(request.body.categoryId)
   });
 
-  return product;
+  reply.code(200).send({product, message: 'Product created successfully'})
 }
 
 export async function getProductsHandler() {
